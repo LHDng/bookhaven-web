@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
-import { User as SupabaseUser, AuthError } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
+import { User as SupabaseUser } from '@supabase/supabase-js';
 import { toast } from '@/components/ui/use-toast';
 
 // Định nghĩa kiểu dữ liệu cho người dùng
