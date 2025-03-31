@@ -1,5 +1,8 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
+import { User as SupabaseUser, AuthError } from '@supabase/supabase-js';
+import { toast } from '@/components/ui/use-toast';
 
 // Định nghĩa kiểu dữ liệu cho người dùng
 export interface User {
@@ -23,39 +26,91 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  // Kiểm tra xem người dùng đã đăng nhập trước đó chưa (từ localStorage)
+  // Kiểm tra xem người dùng đã đăng nhập không và cập nhật phiên
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-      setIsLoggedIn(true);
-    }
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.user) {
+          const supaUser = session.user;
+          
+          // Lấy thông tin người dùng từ bảng profiles (nếu có)
+          const { data } = await supabase
+            .from('profiles')
+            .select('name, is_admin')
+            .eq('id', supaUser.id)
+            .single();
+            
+          const userWithName: User = {
+            id: supaUser.id,
+            email: supaUser.email || '',
+            name: data?.name || supaUser.email?.split('@')[0] || 'Người dùng',
+            isAdmin: data?.is_admin || false
+          };
+          
+          setUser(userWithName);
+          setIsLoggedIn(true);
+        } else {
+          setUser(null);
+          setIsLoggedIn(false);
+        }
+      }
+    );
+
+    // Kiểm tra phiên hiện tại khi tải trang
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        const supaUser = session.user;
+        
+        // Lấy thông tin người dùng từ bảng profiles (nếu có)
+        supabase
+          .from('profiles')
+          .select('name, is_admin')
+          .eq('id', supaUser.id)
+          .single()
+          .then(({ data }) => {
+            const userWithName: User = {
+              id: supaUser.id,
+              email: supaUser.email || '',
+              name: data?.name || supaUser.email?.split('@')[0] || 'Người dùng',
+              isAdmin: data?.is_admin || false
+            };
+            
+            setUser(userWithName);
+            setIsLoggedIn(true);
+          });
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   // Hàm đăng nhập
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      // Trong thực tế, đây sẽ là một API call để xác thực người dùng
-      // Hiện tại, chỉ mô phỏng với một số người dùng cố định
-      
-      // Mô phỏng người dùng (trong thực tế sẽ từ API)
-      const mockUsers = [
-        { id: '1', email: 'admin@thuvien.com', name: 'Admin', password: 'admin123', isAdmin: true },
-        { id: '2', email: 'user@thuvien.com', name: 'Người dùng', password: 'user123' }
-      ];
-      
-      const foundUser = mockUsers.find(u => u.email === email && u.password === password);
-      
-      if (foundUser) {
-        // Loại bỏ password trước khi lưu thông tin người dùng
-        const { password, ...userWithoutPassword } = foundUser;
-        setUser(userWithoutPassword);
-        setIsLoggedIn(true);
-        
-        // Lưu thông tin người dùng vào localStorage
-        localStorage.setItem('user', JSON.stringify(userWithoutPassword));
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        toast({
+          title: "Đăng nhập thất bại",
+          description: error.message,
+          variant: "destructive"
+        });
+        return false;
+      }
+
+      if (data.user) {
+        toast({
+          title: "Đăng nhập thành công",
+          description: "Chào mừng bạn quay trở lại!"
+        });
         return true;
       }
+
       return false;
     } catch (error) {
       console.error('Lỗi đăng nhập:', error);
@@ -66,34 +121,50 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Hàm đăng ký
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     try {
-      // Trong thực tế, đây sẽ là một API call để đăng ký người dùng mới
-      // Hiện tại, chỉ mô phỏng việc đăng ký thành công
-      
-      // Kiểm tra xem email đã tồn tại chưa
-      const existingUser = localStorage.getItem('registeredUsers');
-      let users = existingUser ? JSON.parse(existingUser) : [];
-      
-      if (users.some((u: any) => u.email === email)) {
-        return false; // Email đã tồn tại
+      // Đăng ký người dùng mới trong Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name
+          }
+        }
+      });
+
+      if (authError) {
+        toast({
+          title: "Đăng ký thất bại",
+          description: authError.message,
+          variant: "destructive"
+        });
+        return false;
       }
-      
-      // Tạo người dùng mới
-      const newUser = {
-        id: Date.now().toString(),
-        name,
-        email
-      };
-      
-      // Lưu thông tin người dùng mới
-      users.push({ ...newUser, password });
-      localStorage.setItem('registeredUsers', JSON.stringify(users));
-      
-      // Đăng nhập người dùng mới
-      setUser(newUser);
-      setIsLoggedIn(true);
-      localStorage.setItem('user', JSON.stringify(newUser));
-      
-      return true;
+
+      if (authData.user) {
+        // Thêm thông tin người dùng vào bảng profiles
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            id: authData.user.id,
+            name,
+            email,
+            is_admin: false
+          });
+
+        if (profileError) {
+          console.error('Lỗi tạo hồ sơ:', profileError);
+        }
+
+        toast({
+          title: "Đăng ký thành công",
+          description: "Chào mừng bạn đến với ThưViện!"
+        });
+        
+        return true;
+      }
+
+      return false;
     } catch (error) {
       console.error('Lỗi đăng ký:', error);
       return false;
@@ -101,10 +172,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Hàm đăng xuất
-  const logout = () => {
-    setUser(null);
-    setIsLoggedIn(false);
-    localStorage.removeItem('user');
+  const logout = async () => {
+    await supabase.auth.signOut();
+    toast({
+      title: "Đã đăng xuất",
+      description: "Hẹn gặp lại bạn!"
+    });
   };
 
   return (
