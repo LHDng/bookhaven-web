@@ -1,18 +1,30 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/context/CartContext';
-import { ShoppingCart, Menu, X, Search, BookOpen } from 'lucide-react';
+import { useUser } from '@/context/UserContext';
+import { ShoppingCart, Menu, X, Search, BookOpen, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 const NavBar = () => {
   const { cart } = useCart();
+  const { user, isLoggedIn, logout } = useUser();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const categories = [
     { name: 'Tiểu thuyết', path: '/category/fiction' },
@@ -21,6 +33,20 @@ const NavBar = () => {
     { name: 'Lịch sử', path: '/category/history' },
     { name: 'Tiểu sử', path: '/category/biography' },
   ];
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Trong thực tế, sẽ chuyển hướng đến trang tìm kiếm với query
+      console.log('Tìm kiếm:', searchQuery);
+      // navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <header className="border-b sticky top-0 bg-background z-30">
@@ -50,14 +76,57 @@ const NavBar = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
-            <div className="hidden sm:flex relative">
+            <form onSubmit={handleSearch} className="hidden sm:flex relative">
               <input
                 type="text"
                 placeholder="Tìm sách..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bookstore-burgundy focus:border-transparent"
               />
-              <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-            </div>
+              <button type="submit" className="absolute right-3 top-2.5">
+                <Search className="h-5 w-5 text-gray-400" />
+              </button>
+            </form>
+
+            {/* User Menu hoặc Login/Register Links */}
+            {isLoggedIn ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="relative">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>
+                    Xin chào, {user?.name}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => navigate('/my-account')}>
+                    Tài khoản của tôi
+                  </DropdownMenuItem>
+                  {user?.isAdmin && (
+                    <DropdownMenuItem onClick={() => navigate('/admin')}>
+                      Quản lý cửa hàng
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Đăng xuất
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="hidden sm:flex space-x-2">
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/login">Đăng nhập</Link>
+                </Button>
+                <Button size="sm" className="bg-bookstore-burgundy hover:bg-bookstore-burgundy/90" asChild>
+                  <Link to="/register">Đăng ký</Link>
+                </Button>
+              </div>
+            )}
 
             <Sheet>
               <SheetTrigger asChild>
@@ -162,15 +231,31 @@ const NavBar = () => {
         {isMenuOpen && (
           <div className="md:hidden pt-4 pb-2 border-t mt-3">
             <div className="mb-4">
-              <div className="relative">
+              <form onSubmit={handleSearch} className="relative">
                 <input
                   type="text"
                   placeholder="Tìm kiếm sách..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bookstore-burgundy focus:border-transparent"
                 />
-                <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
-              </div>
+                <button type="submit" className="absolute right-3 top-2.5">
+                  <Search className="h-5 w-5 text-gray-400" />
+                </button>
+              </form>
             </div>
+            
+            {!isLoggedIn && (
+              <div className="flex space-x-2 mb-4">
+                <Button variant="outline" size="sm" className="flex-1" asChild>
+                  <Link to="/login">Đăng nhập</Link>
+                </Button>
+                <Button size="sm" className="flex-1 bg-bookstore-burgundy hover:bg-bookstore-burgundy/90" asChild>
+                  <Link to="/register">Đăng ký</Link>
+                </Button>
+              </div>
+            )}
+            
             <ul className="space-y-2">
               {categories.map((category) => (
                 <li key={category.path}>
@@ -183,6 +268,30 @@ const NavBar = () => {
                   </Link>
                 </li>
               ))}
+              {isLoggedIn && (
+                <>
+                  <li>
+                    <Link
+                      to="/my-account"
+                      className="block px-2 py-1 text-sm font-medium hover:text-bookstore-burgundy transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Tài khoản của tôi
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setIsMenuOpen(false);
+                      }}
+                      className="block w-full text-left px-2 py-1 text-sm font-medium hover:text-bookstore-burgundy transition-colors"
+                    >
+                      Đăng xuất
+                    </button>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         )}
