@@ -8,18 +8,18 @@ import {
   Sheet,
   SheetContent,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from '@/components/ui/sheet';
 
 const NavBar = () => {
   const { cart } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const categories = [
-    { name: 'Fiction', path: '/category/fiction' },
-    { name: 'Non-Fiction', path: '/category/non-fiction' },
-    { name: 'Science', path: '/category/science' },
-    { name: 'History', path: '/category/history' },
-    { name: 'Biography', path: '/category/biography' },
+    { name: 'Tiểu thuyết', path: '/category/fiction' },
+    { name: 'Phi hư cấu', path: '/category/non-fiction' },
+    { name: 'Khoa học', path: '/category/science' },
+    { name: 'Lịch sử', path: '/category/history' },
+    { name: 'Tiểu sử', path: '/category/biography' },
   ];
 
   return (
@@ -29,7 +29,7 @@ const NavBar = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center">
               <BookOpen className="h-8 w-8 text-bookstore-burgundy" />
-              <span className="ml-2 text-2xl font-serif font-bold">BookHaven</span>
+              <span className="ml-2 text-2xl font-serif font-bold">ThưViện</span>
             </Link>
           </div>
 
@@ -53,7 +53,7 @@ const NavBar = () => {
             <div className="hidden sm:flex relative">
               <input
                 type="text"
-                placeholder="Search books..."
+                placeholder="Tìm sách..."
                 className="px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bookstore-burgundy focus:border-transparent"
               />
               <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />
@@ -73,11 +73,11 @@ const NavBar = () => {
               <SheetContent>
                 <div className="flex flex-col h-full">
                   <div className="py-4">
-                    <h2 className="text-xl font-semibold">Your Cart</h2>
+                    <h2 className="text-xl font-semibold">Giỏ hàng của bạn</h2>
                     <p className="text-sm text-muted-foreground">
                       {cart.items.length === 0
-                        ? "Your cart is empty"
-                        : `${cart.items.reduce((acc, item) => acc + item.quantity, 0)} items in your cart`}
+                        ? "Giỏ hàng đang trống"
+                        : `${cart.items.reduce((acc, item) => acc + item.quantity, 0)} sản phẩm trong giỏ hàng`}
                     </p>
                   </div>
                   
@@ -85,9 +85,9 @@ const NavBar = () => {
                     {cart.items.length === 0 ? (
                       <div className="flex flex-col items-center justify-center h-full text-center p-4">
                         <ShoppingCart className="h-16 w-16 text-muted-foreground mb-4" />
-                        <p className="mb-4">Your cart is empty</p>
+                        <p className="mb-4">Giỏ hàng của bạn đang trống</p>
                         <Button asChild>
-                          <Link to="/books">Browse Books</Link>
+                          <Link to="/books">Xem sách</Link>
                         </Button>
                       </div>
                     ) : (
@@ -134,11 +134,11 @@ const NavBar = () => {
                   {cart.items.length > 0 && (
                     <div className="pt-4 border-t">
                       <div className="flex justify-between mb-4">
-                        <span>Subtotal</span>
+                        <span>Tổng tiền</span>
                         <span className="font-semibold">${cart.total.toFixed(2)}</span>
                       </div>
                       <Button className="w-full" asChild>
-                        <Link to="/checkout">Checkout</Link>
+                        <Link to="/checkout">Thanh toán</Link>
                       </Button>
                     </div>
                   )}
@@ -165,7 +165,7 @@ const NavBar = () => {
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search books..."
+                  placeholder="Tìm kiếm sách..."
                   className="w-full px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-bookstore-burgundy focus:border-transparent"
                 />
                 <Search className="absolute right-3 top-2.5 h-5 w-5 text-gray-400" />

@@ -16,10 +16,10 @@ const Hero: React.FC<HeroProps> = ({ featuredBook }) => {
         <div className="flex flex-col lg:flex-row items-center">
           <div className="lg:w-1/2 lg:pr-12 mb-8 lg:mb-0">
             <span className="inline-block bg-bookstore-burgundy text-white px-3 py-1 text-sm rounded-full mb-4">
-              Featured Book
+              Sách nổi bật
             </span>
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">{featuredBook.title}</h1>
-            <p className="text-lg mb-2">By {featuredBook.author}</p>
+            <p className="text-lg mb-2">Tác giả: {featuredBook.author}</p>
             <div className="flex items-center mb-4">
               <div className="flex">
                 {[...Array(5)].map((_, i) => (
@@ -38,7 +38,7 @@ const Hero: React.FC<HeroProps> = ({ featuredBook }) => {
                 ))}
               </div>
               <span className="ml-2 text-sm">
-                {featuredBook.rating.toFixed(1)} ({Math.floor(Math.random() * 1000) + 100} reviews)
+                {featuredBook.rating.toFixed(1)} ({Math.floor(Math.random() * 1000) + 100} đánh giá)
               </span>
             </div>
             <p className="text-gray-600 mb-6 line-clamp-4">
@@ -47,7 +47,7 @@ const Hero: React.FC<HeroProps> = ({ featuredBook }) => {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button asChild size="lg" className="bg-bookstore-burgundy hover:bg-bookstore-brown">
                 <Link to={`/book/${featuredBook.id}`}>
-                  View Details
+                  Xem chi tiết
                 </Link>
               </Button>
               <Button
@@ -56,7 +56,7 @@ const Hero: React.FC<HeroProps> = ({ featuredBook }) => {
                 className="border-bookstore-burgundy text-bookstore-burgundy hover:bg-bookstore-burgundy hover:text-white"
                 onClick={() => window.location.href = '/books'}
               >
-                Browse All Books
+                Xem tất cả sách
               </Button>
             </div>
           </div>

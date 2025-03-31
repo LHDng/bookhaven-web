@@ -22,10 +22,10 @@ const BookDetail = () => {
         <NavBar />
         <div className="flex-grow flex items-center justify-center">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4">Book Not Found</h1>
-            <p className="mb-6">The book you are looking for does not exist.</p>
+            <h1 className="text-2xl font-bold mb-4">Không tìm thấy sách</h1>
+            <p className="mb-6">Cuốn sách bạn đang tìm kiếm không tồn tại.</p>
             <Button asChild>
-              <Link to="/books">Browse All Books</Link>
+              <Link to="/books">Xem tất cả sách</Link>
             </Button>
           </div>
         </div>
@@ -73,7 +73,7 @@ const BookDetail = () => {
                 </div>
                 
                 <h1 className="text-3xl md:text-4xl font-serif font-bold mb-2">{book.title}</h1>
-                <p className="text-lg mb-4">by <Link to={`/author/${book.author}`} className="hover:text-bookstore-burgundy transition-colors">{book.author}</Link></p>
+                <p className="text-lg mb-4">bởi <Link to={`/author/${book.author}`} className="hover:text-bookstore-burgundy transition-colors">{book.author}</Link></p>
                 
                 <div className="flex items-center mb-6">
                   <div className="flex mr-2">
@@ -86,7 +86,7 @@ const BookDetail = () => {
                   </div>
                   <span className="text-sm font-medium">{book.rating.toFixed(1)}</span>
                   <span className="mx-2 text-gray-500">•</span>
-                  <span className="text-sm text-gray-600">{Math.floor(Math.random() * 500) + 50} reviews</span>
+                  <span className="text-sm text-gray-600">{Math.floor(Math.random() * 500) + 50} đánh giá</span>
                 </div>
                 
                 <div className="flex items-baseline mb-6">
@@ -98,7 +98,7 @@ const BookDetail = () => {
                   )}
                   {book.originalPrice && (
                     <span className="ml-2 bg-green-100 text-green-800 text-sm px-2 py-0.5 rounded">
-                      Save ${(book.originalPrice - book.price).toFixed(2)}
+                      Tiết kiệm ${(book.originalPrice - book.price).toFixed(2)}
                     </span>
                   )}
                 </div>
@@ -110,7 +110,7 @@ const BookDetail = () => {
                     className="bg-bookstore-burgundy hover:bg-bookstore-brown"
                   >
                     <ShoppingCart className="mr-2 h-5 w-5" />
-                    Add to Cart
+                    Thêm vào giỏ hàng
                   </Button>
                   <Button
                     variant="outline"
@@ -118,7 +118,7 @@ const BookDetail = () => {
                     className="border-bookstore-burgundy text-bookstore-burgundy"
                   >
                     <Heart className="mr-2 h-5 w-5" />
-                    Add to Wishlist
+                    Thêm vào danh sách yêu thích
                   </Button>
                   <Button
                     variant="ghost"
@@ -130,7 +130,7 @@ const BookDetail = () => {
                 </div>
                 
                 <div className="prose max-w-none mb-8">
-                  <h2 className="text-xl font-semibold mb-4">Description</h2>
+                  <h2 className="text-xl font-semibold mb-4">Mô tả</h2>
                   <p className="text-gray-700 leading-relaxed">
                     {book.description}
                   </p>
@@ -138,19 +138,19 @@ const BookDetail = () => {
                 
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
                   <div className="bg-secondary p-4 rounded">
-                    <span className="text-sm text-gray-600">Pages</span>
+                    <span className="text-sm text-gray-600">Số trang</span>
                     <p className="font-semibold">{book.pages}</p>
                   </div>
                   <div className="bg-secondary p-4 rounded">
-                    <span className="text-sm text-gray-600">Publisher</span>
+                    <span className="text-sm text-gray-600">Nhà xuất bản</span>
                     <p className="font-semibold">{book.publisher}</p>
                   </div>
                   <div className="bg-secondary p-4 rounded">
-                    <span className="text-sm text-gray-600">Publication Date</span>
+                    <span className="text-sm text-gray-600">Ngày xuất bản</span>
                     <p className="font-semibold">{book.publishedDate}</p>
                   </div>
                   <div className="bg-secondary p-4 rounded">
-                    <span className="text-sm text-gray-600">Language</span>
+                    <span className="text-sm text-gray-600">Ngôn ngữ</span>
                     <p className="font-semibold">{book.language}</p>
                   </div>
                   <div className="bg-secondary p-4 rounded">
@@ -167,7 +167,7 @@ const BookDetail = () => {
             <div className="mt-16">
               <BookGrid 
                 books={recommendedBooks} 
-                title={`Recommended ${book.category.charAt(0).toUpperCase() + book.category.slice(1)} Books`} 
+                title={`Sách ${book.category.charAt(0).toUpperCase() + book.category.slice(1)} đề xuất`} 
               />
             </div>
           )}

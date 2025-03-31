@@ -11,10 +11,10 @@ const Footer = () => {
           <div>
             <Link to="/" className="flex items-center">
               <BookOpen className="h-8 w-8" />
-              <span className="ml-2 text-2xl font-serif font-bold">BookHaven</span>
+              <span className="ml-2 text-2xl font-serif font-bold">ThưViện</span>
             </Link>
             <p className="mt-4 text-sm opacity-80">
-              Your destination for quality books at affordable prices. Discover new worlds through reading.
+              Điểm đến của bạn để tìm sách chất lượng với giá cả phải chăng. Khám phá thế giới mới qua việc đọc sách.
             </p>
             <div className="mt-6 flex space-x-4">
               <a href="#" className="hover:text-bookstore-gold transition-colors">
@@ -33,84 +33,84 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Explore</h3>
+            <h3 className="font-semibold text-lg mb-4">Khám phá</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/books" className="text-sm hover:text-bookstore-gold transition-colors">
-                  All Books
+                  Tất cả sách
                 </Link>
               </li>
               <li>
                 <Link to="/category/fiction" className="text-sm hover:text-bookstore-gold transition-colors">
-                  Fiction
+                  Tiểu thuyết
                 </Link>
               </li>
               <li>
                 <Link to="/category/non-fiction" className="text-sm hover:text-bookstore-gold transition-colors">
-                  Non-Fiction
+                  Phi hư cấu
                 </Link>
               </li>
               <li>
                 <Link to="/bestsellers" className="text-sm hover:text-bookstore-gold transition-colors">
-                  Bestsellers
+                  Sách bán chạy
                 </Link>
               </li>
               <li>
                 <Link to="/new-releases" className="text-sm hover:text-bookstore-gold transition-colors">
-                  New Releases
+                  Sách mới
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Customer Service</h3>
+            <h3 className="font-semibold text-lg mb-4">Hỗ trợ khách hàng</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/contact" className="text-sm hover:text-bookstore-gold transition-colors">
-                  Contact Us
+                  Liên hệ
                 </Link>
               </li>
               <li>
                 <Link to="/faq" className="text-sm hover:text-bookstore-gold transition-colors">
-                  FAQ
+                  Câu hỏi thường gặp
                 </Link>
               </li>
               <li>
                 <Link to="/shipping" className="text-sm hover:text-bookstore-gold transition-colors">
-                  Shipping & Returns
+                  Vận chuyển & Đổi trả
                 </Link>
               </li>
               <li>
                 <Link to="/privacy-policy" className="text-sm hover:text-bookstore-gold transition-colors">
-                  Privacy Policy
+                  Chính sách bảo mật
                 </Link>
               </li>
               <li>
                 <Link to="/terms" className="text-sm hover:text-bookstore-gold transition-colors">
-                  Terms & Conditions
+                  Điều khoản & Điều kiện
                 </Link>
               </li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold text-lg mb-4">Newsletter</h3>
+            <h3 className="font-semibold text-lg mb-4">Đăng ký nhận tin</h3>
             <p className="text-sm opacity-80 mb-4">
-              Subscribe to our newsletter for updates on new releases, exclusive offers, and reading recommendations.
+              Đăng ký nhận bản tin của chúng tôi để cập nhật về sách mới, ưu đãi độc quyền và gợi ý đọc sách.
             </p>
             <form className="mt-4">
               <div className="flex">
                 <input
                   type="email"
-                  placeholder="Your email address"
+                  placeholder="Địa chỉ email của bạn"
                   className="px-3 py-2 rounded-l text-gray-800 w-full focus:outline-none"
                 />
                 <button
                   type="submit"
                   className="bg-bookstore-gold text-bookstore-brown font-medium px-4 py-2 rounded-r hover:bg-opacity-90 transition-colors"
                 >
-                  Subscribe
+                  Đăng ký
                 </button>
               </div>
             </form>
@@ -119,7 +119,7 @@ const Footer = () => {
 
         <div className="border-t border-white border-opacity-20 mt-10 pt-6">
           <p className="text-sm text-center opacity-70">
-            &copy; {new Date().getFullYear()} BookHaven. All rights reserved.
+            &copy; {new Date().getFullYear()} ThưViện. Tất cả quyền đã được bảo lưu.
           </p>
         </div>
       </div>

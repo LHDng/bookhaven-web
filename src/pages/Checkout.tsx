@@ -31,8 +31,8 @@ const Checkout = () => {
     
     // In a real app, you would process the order here
     toast({
-      title: "Order placed successfully!",
-      description: "Thank you for your purchase.",
+      title: "Đặt hàng thành công!",
+      description: "Cảm ơn bạn đã mua hàng.",
       duration: 5000,
     });
     
@@ -46,13 +46,13 @@ const Checkout = () => {
         <NavBar />
         <main className="flex-grow flex items-center justify-center bg-gray-50">
           <div className="text-center p-8">
-            <h1 className="text-2xl font-bold mb-4">Your cart is empty</h1>
-            <p className="mb-6">Add some books to your cart before proceeding to checkout.</p>
+            <h1 className="text-2xl font-bold mb-4">Giỏ hàng trống</h1>
+            <p className="mb-6">Thêm một vài cuốn sách vào giỏ hàng trước khi thanh toán.</p>
             <Button
               onClick={() => navigate('/books')}
               className="bg-bookstore-burgundy hover:bg-bookstore-brown"
             >
-              Browse Books
+              Xem danh sách sách
             </Button>
           </div>
         </main>
@@ -67,7 +67,7 @@ const Checkout = () => {
       
       <main className="flex-grow bg-gray-50">
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-serif font-bold mb-6 decorated-title">Checkout</h1>
+          <h1 className="text-3xl font-serif font-bold mb-6 decorated-title">Thanh toán</h1>
           
           {/* Checkout Steps */}
           <div className="mb-8">
@@ -76,7 +76,7 @@ const Checkout = () => {
                 <span className={`flex items-center justify-center w-8 h-8 mr-2 ${activeStep >= 1 ? 'bg-bookstore-burgundy text-white' : 'bg-gray-200'} rounded-full shrink-0`}>
                   1
                 </span>
-                <span className="hidden sm:inline-flex">Cart</span>
+                <span className="hidden sm:inline-flex">Giỏ hàng</span>
                 <svg className="w-3 h-3 ml-2 sm:ml-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
                 </svg>
@@ -85,7 +85,7 @@ const Checkout = () => {
                 <span className={`flex items-center justify-center w-8 h-8 mr-2 ${activeStep >= 2 ? 'bg-bookstore-burgundy text-white' : 'bg-gray-200'} rounded-full shrink-0`}>
                   2
                 </span>
-                <span className="hidden sm:inline-flex">Shipping</span>
+                <span className="hidden sm:inline-flex">Vận chuyển</span>
                 <svg className="w-3 h-3 ml-2 sm:ml-4 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m7 9 4-4-4-4M1 9l4-4-4-4"/>
                 </svg>
@@ -94,7 +94,7 @@ const Checkout = () => {
                 <span className={`flex items-center justify-center w-8 h-8 mr-2 ${activeStep >= 3 ? 'bg-bookstore-burgundy text-white' : 'bg-gray-200'} rounded-full shrink-0`}>
                   3
                 </span>
-                <span className="hidden sm:inline-flex">Payment</span>
+                <span className="hidden sm:inline-flex">Thanh toán</span>
               </li>
             </ol>
           </div>
@@ -103,7 +103,7 @@ const Checkout = () => {
             {/* Order Summary */}
             <div className="lg:w-1/3 order-2 lg:order-1">
               <div className="bg-white p-6 rounded-lg shadow-sm">
-                <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+                <h2 className="text-xl font-semibold mb-4">Tóm tắt đơn hàng</h2>
                 
                 <div className="divide-y">
                   {cart.items.map((item) => (
@@ -115,7 +115,7 @@ const Checkout = () => {
                       />
                       <div className="ml-4 flex-1">
                         <h3 className="font-medium">{item.book.title}</h3>
-                        <p className="text-sm text-gray-600">by {item.book.author}</p>
+                        <p className="text-sm text-gray-600">bởi {item.book.author}</p>
                         <div className="flex justify-between mt-2">
                           <span className="text-sm">${item.book.price.toFixed(2)} × {item.quantity}</span>
                           <span className="font-medium">${(item.book.price * item.quantity).toFixed(2)}</span>
@@ -127,19 +127,19 @@ const Checkout = () => {
                 
                 <div className="border-t mt-4 pt-4">
                   <div className="flex justify-between mb-2">
-                    <span>Subtotal</span>
+                    <span>Tổng phụ</span>
                     <span>${cart.total.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between mb-2">
-                    <span>Shipping</span>
+                    <span>Phí vận chuyển</span>
                     <span>${shipping.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between mb-4">
-                    <span>Tax (10%)</span>
+                    <span>Thuế (10%)</span>
                     <span>${tax.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between font-bold text-lg">
-                    <span>Total</span>
+                    <span>Tổng cộng</span>
                     <span>${orderTotal.toFixed(2)}</span>
                   </div>
                 </div>
@@ -154,56 +154,56 @@ const Checkout = () => {
                     <div>
                       <h2 className="text-xl font-semibold mb-6 flex items-center">
                         <Truck className="mr-2 h-5 w-5" />
-                        Shipping Information
+                        Thông tin vận chuyển
                       </h2>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
-                          <Label htmlFor="firstName">First Name</Label>
+                          <Label htmlFor="firstName">Tên</Label>
                           <Input id="firstName" required />
                         </div>
                         <div>
-                          <Label htmlFor="lastName">Last Name</Label>
+                          <Label htmlFor="lastName">Họ</Label>
                           <Input id="lastName" required />
                         </div>
                       </div>
                       
                       <div className="mb-4">
-                        <Label htmlFor="email">Email Address</Label>
+                        <Label htmlFor="email">Địa chỉ email</Label>
                         <Input id="email" type="email" required />
                       </div>
                       
                       <div className="mb-4">
-                        <Label htmlFor="phone">Phone Number</Label>
+                        <Label htmlFor="phone">Số điện thoại</Label>
                         <Input id="phone" type="tel" />
                       </div>
                       
                       <div className="mb-4">
-                        <Label htmlFor="address">Address</Label>
+                        <Label htmlFor="address">Địa chỉ</Label>
                         <Input id="address" required />
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                         <div>
-                          <Label htmlFor="city">City</Label>
+                          <Label htmlFor="city">Thành phố</Label>
                           <Input id="city" required />
                         </div>
                         <div>
-                          <Label htmlFor="state">State/Province</Label>
-                          <Select defaultValue="CA">
+                          <Label htmlFor="state">Tỉnh/Thành phố</Label>
+                          <Select defaultValue="HN">
                             <SelectTrigger>
-                              <SelectValue placeholder="Select state" />
+                              <SelectValue placeholder="Chọn tỉnh/thành phố" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="CA">California</SelectItem>
-                              <SelectItem value="NY">New York</SelectItem>
-                              <SelectItem value="TX">Texas</SelectItem>
-                              <SelectItem value="FL">Florida</SelectItem>
+                              <SelectItem value="HN">Hà Nội</SelectItem>
+                              <SelectItem value="HCM">TP.HCM</SelectItem>
+                              <SelectItem value="DN">Đà Nẵng</SelectItem>
+                              <SelectItem value="HP">Hải Phòng</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                         <div>
-                          <Label htmlFor="zipCode">ZIP/Postal Code</Label>
+                          <Label htmlFor="zipCode">Mã bưu điện</Label>
                           <Input id="zipCode" required />
                         </div>
                       </div>
@@ -213,7 +213,7 @@ const Checkout = () => {
                         onClick={() => setActiveStep(2)}
                         className="w-full bg-bookstore-burgundy hover:bg-bookstore-brown"
                       >
-                        Continue to Payment
+                        Tiếp tục thanh toán
                       </Button>
                     </div>
                   )}
@@ -222,22 +222,22 @@ const Checkout = () => {
                     <div>
                       <h2 className="text-xl font-semibold mb-6 flex items-center">
                         <CreditCard className="mr-2 h-5 w-5" />
-                        Payment Method
+                        Phương thức thanh toán
                       </h2>
                       
                       <div className="mb-6">
-                        <Label htmlFor="cardName">Name on Card</Label>
+                        <Label htmlFor="cardName">Tên trên thẻ</Label>
                         <Input id="cardName" required />
                       </div>
                       
                       <div className="mb-6">
-                        <Label htmlFor="cardNumber">Card Number</Label>
+                        <Label htmlFor="cardNumber">Số thẻ</Label>
                         <Input id="cardNumber" placeholder="1234 5678 9012 3456" required />
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                         <div>
-                          <Label htmlFor="expDate">Expiration Date</Label>
+                          <Label htmlFor="expDate">Ngày hết hạn</Label>
                           <Input id="expDate" placeholder="MM/YY" required />
                         </div>
                         <div>
@@ -252,13 +252,13 @@ const Checkout = () => {
                           variant="outline"
                           onClick={() => setActiveStep(1)}
                         >
-                          Back
+                          Quay lại
                         </Button>
                         <Button
                           type="submit"
                           className="flex-1 bg-bookstore-burgundy hover:bg-bookstore-brown"
                         >
-                          Place Order
+                          Đặt hàng
                         </Button>
                       </div>
                     </div>

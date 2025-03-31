@@ -16,7 +16,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
 }) => {
   return (
     <div className="mb-8">
-      <h2 className="text-xl font-medium mb-4">Categories</h2>
+      <h2 className="text-xl font-medium mb-4">Thể loại</h2>
       <div className="flex flex-wrap gap-2">
         <Button
           variant="outline"
@@ -27,7 +27,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
             selectedCategory === null && "bg-bookstore-burgundy text-white"
           )}
         >
-          All
+          Tất cả
         </Button>
         {categories.map((category) => (
           <Button

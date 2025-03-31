@@ -56,7 +56,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
             className="w-full bg-bookstore-burgundy hover:bg-bookstore-brown"
           >
             <ShoppingCart className="mr-2 h-4 w-4" />
-            Add to Cart
+            Thêm vào giỏ
           </Button>
         </div>
       </div>

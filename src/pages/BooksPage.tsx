@@ -25,14 +25,14 @@ const BooksPage = () => {
   const [sortOption, setSortOption] = useState('newest');
   
   const categories = [
-    { id: 'fiction', name: 'Fiction' },
-    { id: 'non-fiction', name: 'Non-Fiction' },
-    { id: 'science', name: 'Science' },
-    { id: 'history', name: 'History' },
-    { id: 'biography', name: 'Biography' },
-    { id: 'fantasy', name: 'Fantasy' },
-    { id: 'mystery', name: 'Mystery' },
-    { id: 'self-help', name: 'Self-Help' },
+    { id: 'fiction', name: 'Tiểu thuyết' },
+    { id: 'non-fiction', name: 'Phi hư cấu' },
+    { id: 'science', name: 'Khoa học' },
+    { id: 'history', name: 'Lịch sử' },
+    { id: 'biography', name: 'Tiểu sử' },
+    { id: 'fantasy', name: 'Kỳ ảo' },
+    { id: 'mystery', name: 'Trinh thám' },
+    { id: 'self-help', name: 'Phát triển bản thân' },
   ];
   
   useEffect(() => {
@@ -96,17 +96,17 @@ const BooksPage = () => {
       
       <main className="flex-grow bg-gray-50">
         <div className="container mx-auto px-4 py-8">
-          <h1 className="text-3xl font-serif font-bold mb-8 decorated-title">Browse Books</h1>
+          <h1 className="text-3xl font-serif font-bold mb-8 decorated-title">Danh sách sách</h1>
           
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar - Filters */}
             <div className="lg:w-1/4">
               <div className="bg-white p-6 rounded-lg shadow-sm">
                 <div className="mb-6">
-                  <Label htmlFor="search" className="mb-2 block">Search</Label>
+                  <Label htmlFor="search" className="mb-2 block">Tìm kiếm</Label>
                   <Input
                     id="search"
-                    placeholder="Search by title or author"
+                    placeholder="Tìm theo tên sách hoặc tác giả"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -119,7 +119,7 @@ const BooksPage = () => {
                 />
                 
                 <div className="mb-6">
-                  <h2 className="text-xl font-medium mb-4">Price Range</h2>
+                  <h2 className="text-xl font-medium mb-4">Khoảng giá</h2>
                   <div className="px-2">
                     <Slider
                       defaultValue={[0, maxPrice]}
@@ -142,20 +142,20 @@ const BooksPage = () => {
             <div className="lg:w-3/4">
               <div className="bg-white p-6 rounded-lg shadow-sm mb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
-                  <p className="mb-4 sm:mb-0">{filteredBooks.length} results</p>
+                  <p className="mb-4 sm:mb-0">{filteredBooks.length} kết quả</p>
                   <div className="flex items-center">
-                    <Label htmlFor="sort" className="mr-2 text-sm whitespace-nowrap">Sort by:</Label>
+                    <Label htmlFor="sort" className="mr-2 text-sm whitespace-nowrap">Sắp xếp theo:</Label>
                     <Select value={sortOption} onValueChange={setSortOption}>
                       <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Sort By" />
+                        <SelectValue placeholder="Sắp xếp theo" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="newest">Newest</SelectItem>
-                        <SelectItem value="price-low">Price: Low to High</SelectItem>
-                        <SelectItem value="price-high">Price: High to Low</SelectItem>
-                        <SelectItem value="rating">Rating</SelectItem>
-                        <SelectItem value="title-asc">Title: A-Z</SelectItem>
-                        <SelectItem value="title-desc">Title: Z-A</SelectItem>
+                        <SelectItem value="newest">Mới nhất</SelectItem>
+                        <SelectItem value="price-low">Giá: Thấp đến cao</SelectItem>
+                        <SelectItem value="price-high">Giá: Cao đến thấp</SelectItem>
+                        <SelectItem value="rating">Đánh giá</SelectItem>
+                        <SelectItem value="title-asc">Tên: A-Z</SelectItem>
+                        <SelectItem value="title-desc">Tên: Z-A</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -164,9 +164,9 @@ const BooksPage = () => {
               
               {filteredBooks.length === 0 ? (
                 <div className="bg-white p-6 rounded-lg shadow-sm text-center py-12">
-                  <h2 className="text-2xl font-medium mb-4">No books found</h2>
+                  <h2 className="text-2xl font-medium mb-4">Không tìm thấy sách</h2>
                   <p className="text-gray-600 mb-6">
-                    Try adjusting your filters or search criteria.
+                    Hãy thử điều chỉnh bộ lọc hoặc tiêu chí tìm kiếm của bạn.
                   </p>
                 </div>
               ) : (
