@@ -41,6 +41,7 @@ const Login = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
+      console.log("Submitting login form with:", values.email);
       const success = await login(values.email, values.password);
       if (success) {
         toast({
@@ -56,6 +57,7 @@ const Login = () => {
         });
       }
     } catch (error) {
+      console.error("Caught error during login:", error);
       toast({
         title: 'Lỗi',
         description: 'Đã xảy ra lỗi khi đăng nhập',

@@ -48,6 +48,7 @@ const Register = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     try {
+      console.log("Submitting registration form with:", values.email, values.name);
       const success = await register(values.name, values.email, values.password);
       if (success) {
         toast({
@@ -63,6 +64,7 @@ const Register = () => {
         });
       }
     } catch (error) {
+      console.error("Caught error during registration:", error);
       toast({
         title: 'Lỗi',
         description: 'Đã xảy ra lỗi khi đăng ký',

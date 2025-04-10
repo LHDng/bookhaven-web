@@ -30,6 +30,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
+        console.log("Auth state changed:", event, session?.user?.id);
         if (session?.user) {
           const supaUser = session.user;
           
@@ -58,6 +59,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Kiểm tra phiên hiện tại khi tải trang
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log("Current session check:", session?.user?.id);
       if (session?.user) {
         const supaUser = session.user;
         
@@ -89,12 +91,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Hàm đăng nhập
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
+      console.log("Attempting login for:", email);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
 
       if (error) {
+        console.error("Login error:", error.message);
         toast({
           title: "Đăng nhập thất bại",
           description: error.message,
@@ -104,6 +108,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (data.user) {
+        console.log("Login successful for:", data.user.id);
         toast({
           title: "Đăng nhập thành công",
           description: "Chào mừng bạn quay trở lại!"
@@ -121,6 +126,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Hàm đăng ký
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     try {
+      console.log("Attempting registration for:", email, name);
       // Đăng ký người dùng mới trong Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
@@ -133,6 +139,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
 
       if (authError) {
+        console.error("Registration error:", authError.message);
         toast({
           title: "Đăng ký thất bại",
           description: authError.message,
@@ -142,6 +149,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       if (authData.user) {
+        console.log("Registration successful for:", authData.user.id);
         // Thêm thông tin người dùng vào bảng profiles
         const { error: profileError } = await supabase
           .from('profiles')
