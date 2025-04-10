@@ -42,6 +42,19 @@ const Login = () => {
     setIsLoading(true);
     try {
       console.log("Submitting login form with:", values.email);
+      
+      // Kiểm tra định dạng email (thêm các tên miền phổ biến để đảm bảo tính hợp lệ)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(values.email)) {
+        toast({
+          title: 'Đăng nhập thất bại',
+          description: 'Email không đúng định dạng',
+          variant: 'destructive',
+        });
+        setIsLoading(false);
+        return;
+      }
+      
       const success = await login(values.email, values.password);
       if (success) {
         toast({

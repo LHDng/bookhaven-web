@@ -35,11 +35,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const supaUser = session.user;
           
           // Lấy thông tin người dùng từ bảng profiles (nếu có)
-          const { data } = await supabase
+          const { data, error } = await supabase
             .from('profiles')
             .select('name, is_admin')
             .eq('id', supaUser.id)
             .single();
+          
+          if (error) {
+            console.error('Lỗi khi lấy profile:', error);
+          }
             
           const userWithName: User = {
             id: supaUser.id,
@@ -58,8 +62,13 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     );
 
     // Kiểm tra phiên hiện tại khi tải trang
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
       console.log("Current session check:", session?.user?.id);
+      if (error) {
+        console.error('Lỗi khi lấy session:', error);
+        return;
+      }
+      
       if (session?.user) {
         const supaUser = session.user;
         
@@ -69,7 +78,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           .select('name, is_admin')
           .eq('id', supaUser.id)
           .single()
-          .then(({ data }) => {
+          .then(({ data, error }) => {
+            if (error) {
+              console.error('Lỗi khi lấy profile:', error);
+              return;
+            }
+            
             const userWithName: User = {
               id: supaUser.id,
               email: supaUser.email || '',
@@ -109,10 +123,6 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (data.user) {
         console.log("Login successful for:", data.user.id);
-        toast({
-          title: "Đăng nhập thành công",
-          description: "Chào mừng bạn quay trở lại!"
-        });
         return true;
       }
 
@@ -127,6 +137,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (name: string, email: string, password: string): Promise<boolean> => {
     try {
       console.log("Attempting registration for:", email, name);
+      
       // Đăng ký người dùng mới trong Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
@@ -134,7 +145,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
         options: {
           data: {
             name
-          }
+          },
+          emailRedirectTo: window.location.origin
         }
       });
 
@@ -150,6 +162,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (authData.user) {
         console.log("Registration successful for:", authData.user.id);
+        
         // Thêm thông tin người dùng vào bảng profiles
         const { error: profileError } = await supabase
           .from('profiles')
@@ -162,12 +175,22 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
         if (profileError) {
           console.error('Lỗi tạo hồ sơ:', profileError);
+          // Không return false ở đây vì người dùng đã được tạo
         }
-
-        toast({
-          title: "Đăng ký thành công",
-          description: "Chào mừng bạn đến với ThưViện!"
-        });
+        
+        if (authData.session) {
+          // Nếu có session, có nghĩa là xác thực email đã được chuyển sang chế độ tự động
+          toast({
+            title: "Đăng ký thành công",
+            description: "Chào mừng bạn đến với ThưViện!"
+          });
+        } else {
+          // Nếu không có session, người dùng cần xác thực email
+          toast({
+            title: "Đăng ký thành công",
+            description: "Vui lòng kiểm tra email của bạn để xác thực tài khoản."
+          });
+        }
         
         return true;
       }

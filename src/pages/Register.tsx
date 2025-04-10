@@ -49,6 +49,19 @@ const Register = () => {
     setIsLoading(true);
     try {
       console.log("Submitting registration form with:", values.email, values.name);
+      
+      // Kiểm tra định dạng email (thêm các tên miền phổ biến để đảm bảo tính hợp lệ)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(values.email)) {
+        toast({
+          title: 'Đăng ký thất bại',
+          description: 'Email không đúng định dạng',
+          variant: 'destructive',
+        });
+        setIsLoading(false);
+        return;
+      }
+      
       const success = await register(values.name, values.email, values.password);
       if (success) {
         toast({
